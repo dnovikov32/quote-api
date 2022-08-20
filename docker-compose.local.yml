@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+
+  php:
+    container_name: quote-api-php
+    entrypoint: /entrypoint.sh
+#    extra_hosts:
+#      - "host.docker.internal:host-gateway"
+    env_file:
+      - .env
+    build:
+      context: ./
+      dockerfile: ./.docker/php/dockerfile.local
+#    secrets:
+#      - id_rsa
+    volumes:
+      - "${HOME}/.cache:/home/docker/.cache"
+      - "${HOME}/.composer:/home/docker/.composer"
+      - "${HOME}/.npm:/home/docker/.npm"
+      - ./.docker/php/entrypoint.local.sh:/entrypoint.sh
+      - ./.:/app
+    expose:
+      - 9000
+    networks:
+      - quotes
+
+networks:
+  quotes:
+
+#volumes:
+#  postgres:
+#    driver: local
+
+#secrets:
+#  id_rsa:
+#    file: ~/.ssh/id_rsa
